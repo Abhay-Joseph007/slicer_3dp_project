@@ -5,78 +5,60 @@
 #define MAX_READ_CHUNK 80
 #define FACET_READ_SIZE 12
 
-using std::cout;
-using std::endl;
-using std::cin;
-using std::ofstream;
-using std::ifstream;
-using std::ios;
-using std::hex;
-using std::dec;
+// rounding a vertex (x,y,z) to an even multiple of eps
+// v3 v3_round(float x,float y,float z,double eps){
+// }
 
-
-void Facet_BintoAsc(float values[], ofstream &writefile, ifstream &readfile)
-{
-    readfile.read((char*)values, FACET_READ_SIZE*sizeof(float));
-    writefile << "Normal Vector: " << values[0] << ", " << values[1] << ", " << values[2] << endl;
-    writefile << "Vertex 1: " << values[3] << ", " << values[4] << ", " << values[5] << endl;
-    writefile << "Vertex 2: " << values[6] << ", " << values[7] << ", " << values[8] << endl;
-    writefile << "Vertex 3: " << values[9] << ", " << values[10] << ", " << values[11] << endl;
+//returns a triangle given 3 vertices and normal after rounding off easch vertice to even multiple of eps
+Triangle make_triangle(float v12[FACET_READ_SIZE],double eps){
+    return Triangle (v3(v12[0],v12[1],v12[2]), v3_round(v12[3],v12[4],v12[5], eps), v3_round(v12[6],v12[7],v12[8], eps), v3_round(v12[9],v12[10],v12[11], eps));
 }
 
+// checks if any vertices of a triangle are coinciding
+// bool degenerate (Triangle t) {
+// }
+
+void stlToMeshInMemory (const char *stlFile, TriangleMesh *mesh, double eps){
+
+  int no_of_triangles = 0;                        //to store no of triangles
+  char var[MAX_READ_CHUNK];                       //to read and store header from input file
+  float v12[FACET_READ_SIZE];                    //to store the vector read from input file
+  unsigned short attribute;                     //to store the attribute
+  int ndegenerated = 0;
+
+  ifstream FileRead(stlFile, ios::binary);
+
+  FileRead.read(var,MAX_READ_CHUNK);
+  FileRead.read((char*)no_of_triangles,4);
+
+  for(int i = 0;i < no_of_triangles;i++){
+    FileRead.read((char*)v12,sizeof(float)*FACET_READ_SIZE);
+    FileRead.read((char*)attribute,2);
+
+    Triangle t = make_triangle(v12,eps);
+
+    if (!degenerate(t)) {
+       mesh->push_back (t);
+    }
+    else {
+      ndegenerated++;
+    }
+  }
+
+  FileRead.close();
+  cout << "number of degenerated triangles = " << ndegenerated << endl;
+}
 
 int main(int argc, char** argv)
 {
-    int file_size = 0;                              //to store total file size
-    int no_of_triangles = 0;                        //to store no of triangles
-    char var[MAX_READ_CHUNK];                       //to read and store header from input file
-    float vector_values[FACET_READ_SIZE];             //to store the vector read from input file
+  char *model;
+  model = argv[argc-1];
 
+  double eps = 0.004
 
-    //extract name of stl file from input stream
-    std::string output_file_name = argv[argc-1];       //stores name of input file
-    output_file_name += "_parsed.txt";                  //name of parsed output file
+  TriangleMesh mesh;
 
-    //open files
-    ofstream FileWrite(output_file_name,ios::out | ios::binary | ios::trunc );
-    ifstream FileRead(argv[argc-1], ios::binary | ios::ate);
+  stlToMeshInMemory (model, &mesh, eps);
 
-    //file_size stores size of total stl file read
-    file_size = ((int)FileRead.tellg());
-    FileRead.seekg(0);
-    cout << "Size of input file is: " << file_size <<endl;
-
-    //Print number of triangles in the stl file
-    no_of_triangles = (file_size-84)/50;
-    cout << "Number of Triangles in the input file is: " << no_of_triangles << endl;
-
-
-    //Read 80 bytes of header and store in file
-    FileRead.read(var, 80);
-    FileWrite << "File Header is: "<< endl;
-    FileWrite << var << endl;
-
-    //Write to parsed file the number of Triangles
-    FileWrite << "No of Triangles in File is: ";
-    FileWrite << no_of_triangles << endl;
-    FileRead.seekg(84);
-
-
-    //Reading each facet:
-    for(int i = 0; i<no_of_triangles; i++)
-    {
-        FileWrite << "Facet " << i+1 << ":" << endl;
-        Facet_BintoAsc(vector_values, FileWrite, FileRead);
-        FileWrite << endl;
-        FileRead.read(var,2);
-    }
-    //int pos = ((int)FileRead.tellg());
-    //cout << pos << endl;
-
-
-    //close file descriptors
-    FileWrite.close();
-    FileRead.close();
-
-    return 0;
+  return 0;
 }
