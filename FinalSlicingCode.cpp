@@ -5,9 +5,21 @@
 #define MAX_READ_CHUNK 80
 #define FACET_READ_SIZE 12
 
+//Rounds x to an integer multiple of eps
+float xround (float x, double eps, int mod, int rem) {
+  double y = round((double)x/(mod * eps));
+  double z = (y * mod + rem) * eps;
+  return (float)z;
+}
+
 // rounding a vertex (x,y,z) to an even multiple of eps
-// v3 v3_round(float x,float y,float z,double eps){
-// }
+v3 v3_round(float x,float y,float z,double eps){
+  v3 p;
+  p.x = xround(x, eps, 2, 0);
+  p.y = xround(y, eps, 2, 0);
+  p.z = xround(z, eps, 2, 0);
+  return p;
+}
 
 //returns a triangle given 3 vertices and normal after rounding off easch vertice to even multiple of eps
 Triangle make_triangle(float v12[FACET_READ_SIZE],double eps){
@@ -15,9 +27,14 @@ Triangle make_triangle(float v12[FACET_READ_SIZE],double eps){
 }
 
 // checks if any vertices of a triangle are coinciding
-// bool degenerate (Triangle t) {
-// }
+bool degenerate (Triangle t) {
+  if (t.v[0].distTo(t.v[1]) < 0.000001) { return true; }
+  if (t.v[1].distTo(t.v[2]) < 0.000001) { return true; }
+  if (t.v[2].distTo(t.v[0]) < 0.000001) { return true; }
+  return false;
+}
 
+//function to read triangles from STL file and store it in the TriangleMesh class
 void stlToMeshInMemory (const char *stlFile, TriangleMesh *mesh, double eps){
 
   int no_of_triangles = 0;                        //to store no of triangles
