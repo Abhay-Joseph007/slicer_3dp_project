@@ -1,10 +1,14 @@
+#include <vector>
+
 #include<iostream>
+#include"TriangleClass.h"
+
 using namespace std;
 
 class TriangleMesh {
 
   public:
-  
+
     TriangleMesh();
 
     size_t size() const ;

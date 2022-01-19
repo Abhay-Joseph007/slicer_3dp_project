@@ -2,6 +2,11 @@
 #include<fstream>
 #include<math.h>
 
+#include"TriangleClass.h"
+#include"TriangleMesh.h"
+
+using namespace std;
+
 #define MAX_READ_CHUNK 80
 #define FACET_READ_SIZE 12
 
@@ -71,7 +76,7 @@ int main(int argc, char** argv)
   char *model;
   model = argv[argc-1];
 
-  double eps = 0.004
+  double eps = 0.004;
 
   TriangleMesh mesh;
 
