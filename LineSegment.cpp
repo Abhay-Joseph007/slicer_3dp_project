@@ -13,11 +13,11 @@
         vertical = true;
       }
     }
-    bool LineSegment ::operator==(const LineSegment &ls) const { 
-        return ((v[0] == ls.v[0]) && (v[1] == ls.v[1])); 
-    }
+    // bool LineSegment ::operator==(const LineSegment &ls) const { 
+    //     return ((v[0] == ls.v[0]) && (v[1] == ls.v[1])); 
+    // }
 
-    friend LineSegment :: ostream& operator<<(ostream& os, const LineSegment& ls) {
-      os << "V0: (" << ls.v[0] << "); V1: (" << ls.v[1] << ")";
-      return os;
-    }
+    // friend LineSegment :: ostream& operator<<(ostream& os, const LineSegment& ls) {
+    //   os << "V0: (" << ls.v[0] << "); V1: (" << ls.v[1] << ")";
+    //   return os;
+    // }
