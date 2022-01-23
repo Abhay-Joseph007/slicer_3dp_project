@@ -4,6 +4,7 @@
 
 #include"TriangleClass.h"
 #include"TriangleMesh.h"
+#include"v3.h"
 
 using namespace std;
 

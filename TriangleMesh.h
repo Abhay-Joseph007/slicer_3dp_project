@@ -2,6 +2,7 @@
 
 #include<iostream>
 #include"TriangleClass.h"
+#include"v3.h"
 
 using namespace std;
 
@@ -19,9 +20,9 @@ class TriangleMesh {
 
     const vector<Triangle>& getvTriangle() const;
 
-    v3 getBottomLeftVertex() ;
+    v3 getBottomLeftVertex() const ;
 
-    v3 getUpperRightVertex() ;
+    v3 getUpperRightVertex() const ;
 
   public:
 

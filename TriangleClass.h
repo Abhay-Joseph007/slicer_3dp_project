@@ -11,11 +11,11 @@ class Triangle{
 
     void setZMax (float z) ;
 
-    Triangle& operator-=(const v3 &pt) ;
+    // Triangle& operator-=(const v3 &pt) ;
 
-    bool operator <(const Triangle &t) ;
+    // bool operator <(const Triangle &t) ;
 
-    friend ostream& operator<<(ostream& os, const Triangle& t);
+    // friend ostream& operator<<(ostream& os, const Triangle& t);
   
   public:
 

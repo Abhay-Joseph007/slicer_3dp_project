@@ -1,4 +1,5 @@
 #include"TriangleClass.h"
+#include"v3.h"
 
     Triangle::Triangle(v3 n, v3 v0, v3 v1, v3 v2) : normal(n) {
       v[0] = v0; 
@@ -22,19 +23,19 @@
       }
     }
 
-    Triangle& Triangle::operator-=(const v3 &pt) { 
-      v[0] -= pt; 
-      v[1] -= pt;  
-      v[2] -= pt; 
-      return *this;
-    }
+    // Triangle& Triangle::operator-=(const v3 &pt) { 
+    //   v[0] -= pt; 
+    //   v[1] -= pt;  
+    //   v[2] -= pt; 
+    //   return *this;
+    // }
 
-    bool Triangle::operator<(const Triangle &t) { 
-       return zMin < t.zMin; 
-    }
+    // bool Triangle::operator<(const Triangle &t) { 
+    //    return zMin < t.zMin; 
+    // }
 
-    //this doesnt need to be defined in teh class namespace since it is a friend of the class
-    ostream& operator<<(ostream& os, const Triangle& t) {
-      os << "V0: (" << t.v[0] << "); V1: (" << t.v[1] << "); V2: (" << t.v[2] << ")";
-      return os;
-    } 
+    // //this doesnt need to be defined in teh class namespace since it is a friend of the class
+    // ostream& operator<<(ostream& os, const Triangle& t) {
+    //   os << "V0: (" << t.v[0] << "); V1: (" << t.v[1] << "); V2: (" << t.v[2] << ")";
+    //   return os;
+    // } 
