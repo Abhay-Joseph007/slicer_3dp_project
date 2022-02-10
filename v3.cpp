@@ -17,6 +17,9 @@ float v3:: dotproduct (const v3 &v)const{
 float v3 :: norm()const{ 
       return sqrt(x*x+y*y+z*z); 
     }
-  
+
+bool v3 :: operator==(const v3 &pt) const {
+      return distTo(pt) < 0.005; 
+   }
  
   

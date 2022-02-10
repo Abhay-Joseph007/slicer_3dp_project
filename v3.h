@@ -10,6 +10,8 @@ class v3 {
     float distTo(const v3 &pt)const;
     float dotproduct(const v3 &v)const;
     float norm()const;
+    bool operator!=(const v3 &pt) const;
+    bool operator==(const v3 &pt) const;
 
 float x;
 float y;
